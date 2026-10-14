@@ -2,137 +2,113 @@
    明狗娃的自留地 — 交互脚本
    ========================================================== */
 
-/* 部署信息：第一次推送前确认仓库名 */
-const REPO = 'ziliudi';
-const HOST = 'DESKTOP-UICVL2T'; // 本机主机名，内网访问用
+/* ---------------- 打字机小标题（改这里换文案）---------------- */
+const TYPED_LINES = [
+  '慢慢来，比较快',
+  '把日子过成自己喜欢的样子',
+  '做点有用又好玩的东西',
+  '生活里的小确幸，值得记下来',
+  '把重复的活交给机器，把时间留给自己'
+];
 
-/* ---------------- 数据：内网工具 ----------------
-   port 为 null 表示走默认端口或不带端口 */
-const TOOL_GROUPS = [
+/* ---------------- 网站导航（改这里换站点）---------------- */
+const GUIDE_GROUPS = [
   {
-    name: '数据与运营',
-    tools: [
-      { name: '罗盘', icon: '🧭', desc: '腾讯广告数据聚合看板，5 个主体 641 个账号一屏汇总', port: 8000 },
-      { name: '谛听', icon: '🎧', desc: '电商多渠道数据采集：小店投放 / 妙思灵感 / 即创 / 短视频洞察', port: 8850 },
-      { name: '内容监看大屏', icon: '📺', desc: '直播间与内容线的实时监看大屏', port: 8899 },
-      { name: '微信豆数据统计', icon: '📊', desc: '视频号投放消耗与效果统计', port: null }
+    name: '常用',
+    sites: [
+      { name: 'GitHub', icon: '🐙', desc: '代码托管与开源社区', url: 'https://github.com/' },
+      { name: '掘金', icon: '💎', desc: '中文技术社区，前端后端都在这看', url: 'https://juejin.cn/' },
+      { name: '知乎', icon: '📘', desc: '有问题先搜一圈', url: 'https://www.zhihu.com/' },
+      { name: '哔哩哔哩', icon: '📺', desc: '教程、开箱和电子榨菜', url: 'https://www.bilibili.com/' }
     ]
   },
   {
-    name: '视频生产',
-    tools: [
-      { name: 'H3 工作台', icon: '🎬', desc: 'MiniMax H3 视频生成：文生视频 / 首尾帧 / 全能参考 / 多机调度', port: 8900 },
-      { name: 'Minimax 导演台', icon: '🎛️', desc: '多机任务调度控制台，云端 GPU 统一排队出片', port: 8910 },
-      { name: 'H3 场景素材工厂', icon: '🏭', desc: '批量场景素材生产：自动发散场景 + 提示词 + 云端出片', port: 8912 },
-      { name: '智能剪辑', icon: '✂️', desc: '拆稿 → 配音 → 对口型 → 对齐 → 空镜 → 合成 六步流水线', port: 8600 },
-      { name: '视频号对口型工坊', icon: '👄', desc: '数字人对口型，直接产出竖屏营销成片', port: 5056 },
-      { name: 'Qwen Image 2.1', icon: '🖼️', desc: '本地文生图 / 图生图工作台，带历史与批量重跑', port: 7870 }
+    name: 'AI 工具',
+    sites: [
+      { name: 'ChatGPT', icon: '🤖', desc: '通用对话与写作助手', url: 'https://chatgpt.com/' },
+      { name: 'Claude', icon: '🧠', desc: '长文本、写代码、读文档', url: 'https://claude.ai/' },
+      { name: '即梦 AI', icon: '🎨', desc: '图像与视频生成', url: 'https://jimeng.jianying.com/' },
+      { name: '可灵 AI', icon: '🎬', desc: '视频生成', url: 'https://klingai.kuaishou.com/' }
     ]
   },
   {
-    name: '素材库',
-    tools: [
-      { name: '万象镜头库', icon: '🌌', desc: '按产品线 / 类别 / 子类别组织的镜头素材库', port: 8130 },
-      { name: 'AI 镜库', icon: '🔭', desc: '素材归档与衍生视频内容生成', port: 8121 },
-      { name: '杭州素材库', icon: '🗂️', desc: '素材归档库', port: 8120 }
+    name: '设计 · 素材',
+    sites: [
+      { name: 'Figma', icon: '🧩', desc: '界面设计与协作', url: 'https://www.figma.com/' },
+      { name: 'Dribbble', icon: '🏀', desc: '设计灵感社区', url: 'https://dribbble.com/' },
+      { name: 'Unsplash', icon: '🖼️', desc: '免费高清图库', url: 'https://unsplash.com/' },
+      { name: 'iconfont', icon: '✒️', desc: '阿里矢量图标库', url: 'https://www.iconfont.cn/' }
     ]
   },
   {
     name: '效率工具',
-    tools: [
-      { name: '观策内容团队工作台', icon: '🧰', desc: '内容团队局域网协作台：成片典藏 / ADQ / 数据罗盘', port: 4180 },
-      { name: '与AI同行工作台', icon: '🤝', desc: '本地 AI 工具整合包', port: 7860 },
-      { name: 'FG 素材调度看板', icon: '📌', desc: '直播间素材调度与分配', port: 8765 },
-      { name: '企业豆包水印抹除', icon: '💧', desc: '批量去水印并自动转码交付', port: 3000 },
-      { name: '智能采集', icon: '📡', desc: '7 渠道素材实时采集与榜单聚合', port: 8851 }
+    sites: [
+      { name: 'TinyPNG', icon: '🗜️', desc: '图片无损压缩', url: 'https://tinypng.com/' },
+      { name: 'Carbon', icon: '⌨️', desc: '把代码贴成好看的图片', url: 'https://carbon.now.sh/' },
+      { name: 'JSON 在线解析', icon: '🔧', desc: '格式化、校验、转结构', url: 'https://www.json.cn/' },
+      { name: 'Regex101', icon: '🔍', desc: '正则表达式调试', url: 'https://regex101.com/' }
     ]
   }
 ];
 
-/* ---------------- 数据：公开作品 ---------------- */
-const WORKS = [
+/* ---------------- 文章（示例占位，待替换）---------------- */
+const POSTS = [
   {
-    name: '明狗娃的博客',
-    icon: '📖',
-    desc: 'Hexo 博客，教程 / 资源 / 生活杂记',
-    url: 'https://minggouwa.github.io/',
-    tag: 'Blog'
+    date: '2021-07-15',
+    title: '搭建博客',
+    excerpt: '记一次从零把静态博客跑起来的过程 —— 域名、托管、主题，踩过的坑都在这儿。',
+    url: 'https://minggouwa.github.io/2021/07/搭建博客/index.html'
   },
   {
-    name: 'Moogle',
-    icon: '🔍',
-    desc: 'GitHub 上的自留仓库',
-    url: 'https://github.com/minggouwa/Moogle',
-    tag: 'Repo'
+    date: '2024-03-02',
+    title: '素材攒多了怎么办',
+    excerpt: '从几百个 G 的散装文件夹，到能按产品线、类别一级级找下去 —— 我的素材管理思路。',
+    url: 'https://minggouwa.github.io/'
   },
   {
-    name: '狗抓',
-    icon: '🐾',
-    desc: '浏览器视频嗅探与下载扩展 v1.5.3',
-    url: '',
-    tag: 'Extension'
-  },
-  {
-    name: '豆包无水印下载助手',
-    icon: '⬇️',
-    desc: '豆包原图 / 无水印视频下载扩展 v1.1.0',
-    url: '',
-    tag: 'Extension'
-  },
-  {
-    name: '自留地新标签页',
-    icon: '🗔',
-    desc: '自用新标签页：卡片网格 + 书签 v5.7',
-    url: '',
-    tag: 'Extension'
+    date: '2025-11-18',
+    title: '我的 AI 工具清单',
+    excerpt: '这两年攒下来的趁手家伙：出图的、出片的、对口型的，哪些真在用，哪些吃灰了。',
+    url: 'https://minggouwa.github.io/'
   }
 ];
 
-/* ---------------- 渲染 ---------------- */
+/* ---------------- 工具 ---------------- */
 const arrowSvg =
   '<span class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg></span>';
 
-function cardHtml(item, isLan) {
-  const href = isLan ? `http://${HOST}:${item.port}` : item.url;
-
-  const meta = isLan
-    ? `<div class="card-meta lan">内网${item.port ? ` · :${item.port}` : ''}</div>`
-    : `<div class="card-meta">${item.tag || 'Link'}</div>`;
-
-  const inner = `
-    <div class="card-head">
-      <div class="card-icon">${item.icon}</div>
-      <div class="card-name">${item.name}</div>
-    </div>
-    <div class="card-desc">${item.desc}</div>
-    ${meta}
-    ${href ? arrowSvg : ''}
-  `;
-
-  if (!href) return `<div class="card" tabindex="0">${inner}</div>`;
-
-  const extra = isLan ? ' title="需要在我的局域网内访问"' : ' target="_blank" rel="noopener"';
-  return `<a class="card" href="${href}"${extra}>${inner}</a>`;
+function hostOf(url) {
+  try { return new URL(url).host.replace(/^www\./, ''); } catch (e) { return ''; }
 }
 
-function renderTools() {
-  const box = document.getElementById('toolGroups');
+function renderGuide() {
+  const box = document.getElementById('guideGroups');
   if (!box) return;
 
   let idx = 0;
-  box.innerHTML = TOOL_GROUPS.map((g) => {
-    const cards = g.tools
-      .map((t) => {
-        const html = cardHtml(t, true).replace('class="card"', `class="card" style="--i:${idx}"`);
+  box.innerHTML = GUIDE_GROUPS.map((g) => {
+    const cards = g.sites
+      .map((s) => {
+        const html = `
+          <a class="card" style="--i:${idx}" href="${s.url}" target="_blank" rel="noopener">
+            <div class="card-head">
+              <div class="card-icon">${s.icon}</div>
+              <div class="card-name">${s.name}</div>
+            </div>
+            <div class="card-desc">${s.desc}</div>
+            <div class="card-meta">${hostOf(s.url)}</div>
+            ${arrowSvg}
+          </a>`;
         idx += 1;
         return html;
       })
       .join('');
+
     return `
       <div class="group">
         <div class="group-title">
           <span>${g.name}</span>
-          <span class="count">${g.tools.length}</span>
+          <span class="count">${g.sites.length}</span>
           <span class="rule"></span>
         </div>
         <div class="grid">${cards}</div>
@@ -140,12 +116,68 @@ function renderTools() {
   }).join('');
 }
 
-function renderWorks() {
-  const box = document.getElementById('workGrid');
+function renderPosts() {
+  const box = document.getElementById('postList');
   if (!box) return;
-  box.innerHTML = WORKS.map((w, i) => {
-    return cardHtml(w, false).replace('class="card"', `class="card" style="--i:${i}"`);
-  }).join('');
+  box.innerHTML = POSTS.map(
+    (p) => `
+      <a class="post" href="${p.url}" target="_blank" rel="noopener">
+        <span class="post-date">${p.date}</span>
+        <span class="post-main">
+          <span class="post-title">${p.title}</span>
+          <span class="post-excerpt">${p.excerpt}</span>
+        </span>
+      </a>`
+  ).join('');
+}
+
+/* ---------------- 打字机 ---------------- */
+function initTyped() {
+  const el = document.getElementById('typed');
+  if (!el || !TYPED_LINES.length) return;
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    el.textContent = TYPED_LINES[0];
+    return;
+  }
+
+  const TYPE = 105, DEL = 52, HOLD = 1900, GAP = 420;
+  let line = 0, ch = 0, deleting = false;
+
+  function tick() {
+    const text = TYPED_LINES[line];
+    ch += deleting ? -1 : 1;
+    el.textContent = text.slice(0, ch);
+
+    if (!deleting && ch === text.length) {
+      deleting = true;
+      return setTimeout(tick, HOLD);
+    }
+    if (deleting && ch === 0) {
+      deleting = false;
+      line = (line + 1) % TYPED_LINES.length;
+      return setTimeout(tick, GAP);
+    }
+    return setTimeout(tick, deleting ? DEL : TYPE);
+  }
+
+  setTimeout(tick, 700);
+}
+
+/* ---------------- 顶栏：滚过首页变实底 ---------------- */
+function initTopbar() {
+  const bar = document.getElementById('topbar');
+  const hero = document.getElementById('top');
+  if (!bar || !hero) return;
+
+  const onScroll = () => {
+    const threshold = Math.max(hero.offsetHeight - 76, 120);
+    bar.classList.toggle('solid', window.scrollY > threshold);
+  };
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
 }
 
 /* ---------------- 主题 ---------------- */
@@ -167,19 +199,15 @@ function initTheme() {
   btn.addEventListener('click', () => {
     const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', next);
-    try {
-      localStorage.setItem('mgw-theme', next);
-    } catch (e) {}
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', next === 'light' ? '#f4f7fb' : '#070b11');
+    try { localStorage.setItem('mgw-theme', next); } catch (e) {}
     sync();
   });
 }
 
-/* ---------------- 卡片光效跟随 ---------------- */
+/* ---------------- 卡片跟随光效 ---------------- */
 function initCardGlow() {
   document.addEventListener('pointermove', (e) => {
-    const card = e.target.closest('.card');
+    const card = e.target.closest ? e.target.closest('.card') : null;
     if (!card) return;
     const r = card.getBoundingClientRect();
     card.style.setProperty('--mx', `${e.clientX - r.left}px`);
@@ -187,31 +215,17 @@ function initCardGlow() {
   });
 }
 
-/* ---------------- 回到顶部 ---------------- */
-function initToTop() {
-  const btn = document.getElementById('toTop');
-  if (!btn) return;
-
-  const onScroll = () => btn.classList.toggle('show', window.scrollY > 460);
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
-
-  btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-}
-
 /* ---------------- 初始化 ---------------- */
 function init() {
-  renderTools();
-  renderWorks();
+  renderGuide();
+  renderPosts();
+  initTyped();
+  initTopbar();
   initTheme();
   initCardGlow();
-  initToTop();
 
   const year = document.getElementById('year');
   if (year) year.textContent = String(new Date().getFullYear());
-
-  const repoLink = document.getElementById('repoLink');
-  if (repoLink) repoLink.href = `https://github.com/minggouwa/${REPO}`;
 }
 
 if (document.readyState === 'loading') {
